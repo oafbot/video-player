@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of VIDEO_PLAYER</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node label="AC_OETags.js" url="source/html-template/AC_OETags.js.txt"/>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+		</node>
+		<node label="libs">
+			<node label="Spinner.swc" url="source/libs/Spinner.swc"/>
+			<node icon="swfIcon" label="Spinner.swf" url="source/libs/Spinner.swf"/>
+		</node>
+		<node icon="classpathIcon" label="src" expanded="true">
+			<node label="assets">
+				<node icon="imageIcon" label="background.png" url="source/assets/background.png.html"/>
+				<node icon="imageIcon" label="header.png" url="source/assets/header.png.html"/>
+				<node icon="swfIcon" label="pause_button.swf" url="source/assets/pause_button.swf"/>
+				<node icon="swfIcon" label="play_button.swf" url="source/assets/play_button.swf"/>
+				<node icon="swfIcon" label="vidPan.swf" url="source/assets/vidPan.swf"/>
+			</node>
+			<node icon="packageIcon" label="com.download" expanded="true">
+				<node icon="actionScriptIcon" label="FileDownload.as" url="source/com/download/FileDownload.as.html"/>
+			</node>
+			<node icon="cssIcon" label="pause_button.css" url="source/pause_button.css.html"/>
+			<node icon="cssIcon" label="play_button.css" url="source/play_button.css.html"/>
+			<node icon="mxmlAppIcon" selected="true" label="VIDEO_PLAYER.mxml" url="source/VIDEO_PLAYER.mxml.html"/>
+			<node icon="cssIcon" label="videoPlayer.css" url="source/videoPlayer.css.html"/>
+		</node>
+	</nodes>
+</index>

@@ -1,0 +1,1225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" creationComplete="initializeIt();" 
+	xmlns:download="com.download.*" xmlns:spinner="*" xmlns:local="*"  
+	backgroundColor="#000000" styleName="normal" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+
+//-------------------------------------------------------------------
+//   INITIALIZE:
+//-------------------------------------------------------------------
+			
+			import mx.core.Application;
+            import mx.utils.ObjectUtil;
+            import flash.media.Video;
+            import flash.media.Camera;
+            import flash.media.Microphone;
+            import mx.events.SliderEvent;
+            import flash.net.URLLoader;
+            import flash.net.URLRequest;
+            import flash.net.URLRequestMethod;
+            import flash.net.URLLoaderDataFormat;
+            import flash.net.URLVariables;
+            import mx.controls.Menu;
+            import mx.events.MenuEvent;
+			import mx.controls.*;
+			import mx.rpc.events.ResultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
+			import flash.display.StageDisplayState;
+			import flash.events.FullScreenEvent;
+			import flash.geom.Rectangle;
+			import mx.managers.FocusManager;
+			import flash.events.FocusEvent;
+			 
+			
+            [Bindable] private var vid:Video;
+			
+			[Bindable] private var nixTime:int;
+			[Bindable] private var server:String = "rtmp://platypo.us/oflaDemo";
+			[Bindable] private var videoFile:String;
+			[Bindable] private var vidPlaying:String;
+			[Bindable] private var prevVideo:String;
+			[Bindable] private var date:Date;
+			
+			[Bindable] private var connection:NetConnection;
+			[Bindable] private var testConnect:NetConnection;
+			[Bindable] private var callCount:Number = 0;
+			[Bindable] private var stream:NetStream;
+			[Bindable] private var startBufferLength:Number= 3; //keep this in the range 2-4+
+			[Bindable] private var xpandedBufferLength:Number = 15;  //arbitrarily highnc = new NetConnection();
+			[Bindable] private var prevBufferLength:Number = 0;
+			[Bindable] private var kbaud:uint;
+			
+			[Bindable] private var delay:uint = 100;
+			[Bindable] private var repeat:uint = 0;
+			[Bindable] private var timer:Timer = new Timer(delay,repeat);
+			[Bindable] private var stallCount:uint = 0;
+			[Bindable] private var buffPercent:uint;
+			[Bindable] private var ellipsis:String = ".";
+			[Bindable] private var kickstartCount:uint = 0;
+
+			[Bindable] private var client:Object = new Object();
+			[Bindable] private var connClient:Object = new Object();
+			[Bindable] private var connClient2:Object = new Object();
+
+			[Bindable] private var seconds:uint;
+			[Bindable] private var minutes:uint;
+			[Bindable] private var secondStr:String;
+			[Bindable] private var minuteStr:String;
+			[Bindable] private var time:String;
+			[Bindable] private var hour:uint; 
+			[Bindable] private var duration:Number;
+			[Bindable] private var prevStreamTime:Number;
+			[Bindable] private var timePosition:Number;
+			
+			[Bindable] private var isPlaying:Boolean;
+			[Bindable] private var isPaused:Boolean;
+			[Bindable] private var selectionChanged:Boolean = false;
+			[Bindable] private var isFullScreen:Boolean = false;
+			[Bindable] private var BWisSet:Boolean = false;
+			[Bindable] private var isBuffering:Boolean = false;
+			[Bindable] private var buffEmpty:Boolean = false;
+			[Bindable] private var isTimeout:Boolean = false;
+			[Bindable] private var isEndOfVid:Boolean = false;
+			
+			[Bindable] private var isScrubbed:Boolean;
+			[Bindable] private var isDeleted:Boolean = true;
+			[Bindable] private var onScrubTime:uint = 0;
+			
+			[Bindable] private var info:Object;
+
+			[Bindable] private var request:URLRequest;
+			[Bindable] private var loader:URLLoader;
+			
+			[Bindable] private var huid:String;
+			[Bindable] private var videoData:ArrayCollection;
+
+			[Bindable] private var studentData:String;
+			[Bindable] private var selectedVideo:String;
+
+			[Bindable] private var spinner:Spinner = new Spinner;
+			[Bindable] private var blurFilter:BlurFilter;
+			[Bindable] private var filterArray:Array;
+
+
+
+//----------initializeIt()-------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function initializeIt():void{
+								
+				spinner.stop();
+				spinner.x = 210;
+				spinner.y = 158;
+				spinner.scaleX = 1.5;
+				spinner.scaleY = 1.5;
+				spinner.visible = false;
+				
+				setStatus("Connecting to server...");			
+				connection = new NetConnection();
+				
+				huidInput.addEventListener(FocusEvent.FOCUS_IN, textFocus);
+				passInput.addEventListener(FocusEvent.FOCUS_IN, textFocus);
+				huidInput.addEventListener(FocusEvent.FOCUS_OUT, textOutFocus);
+				passInput.addEventListener(FocusEvent.FOCUS_OUT, textOutFocus);
+				huidInput.addEventListener(Event.CHANGE, onTextChange);
+				
+				videoPanel.verticalScrollPolicy="off"; 
+				videoPanel.horizontalScrollPolicy="off";
+				
+				if ( !BWisSet ){
+				
+					try {
+						bandwidthCheck();				
+					}
+					catch(err:ArgumentError){
+						trace("Argument Error");
+					}					
+					//connection.objectEncoding = ObjectEncoding.AMF0;
+				}
+				else{
+					connection = new NetConnection();
+					//connection.objectEncoding = ObjectEncoding.AMF0;
+					connection.connect(server,true);
+				}
+				
+				connection.addEventListener("netStatus", on_connect_status);
+			    connClient2.BWDone = onBWDone2;
+			    connection.client = connClient2;
+			    				
+				play_button.addEventListener( MouseEvent.CLICK, playHandler );
+				play_button.addEventListener( KeyboardEvent.KEY_DOWN,playPauseKey);
+			    //videoPanel.addEventListener( KeyboardEvent.KEY_DOWN,playSelectKey );
+	  			//reset_button.addEventListener( MouseEvent.CLICK, resetHandler );
+				connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
+				connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
+				timer.addEventListener( TimerEvent.TIMER, updateTimer );
+				login.addEventListener(KeyboardEvent.KEY_DOWN,submitKey);
+				videoList.addEventListener(KeyboardEvent.KEY_DOWN,playSelectKey);
+				videoList.addEventListener(KeyboardEvent.KEY_DOWN,ffRewind);
+			}
+			
+			private function bandwidthCheck():void{
+				testConnect = new NetConnection();
+				//testConnect.objectEncoding = ObjectEncoding.AMF0;
+				connClient.onBWCheck = onBWCheck;
+				connClient.onBWDone = onBWDone;
+				testConnect.client = connClient;				
+				testConnect.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
+				testConnect.addEventListener(NetStatusEvent.NET_STATUS, onBWconnectStatus);
+				testConnect.connect("rtmp://platypo.us/bwcheck", true);
+			}
+				
+			private function onBWconnectStatus(e:NetStatusEvent):void {
+				trace(e.info.code);
+				switch(e.info.code){
+					case "NetConnection.Connect.Closed":
+			        	trace("Connection closed: Bandwidth Check");
+			           	break;
+			        case "NetConnection.Connect.Success":
+			        	trace("You've successfully connected to: "+ testConnect.uri);
+			        	break;
+			  	}	
+			}
+
+//----------on_connect_status()--------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function on_connect_status(event:NetStatusEvent):void {
+		    	trace(event.info.code);
+				switch (event.info.code) {
+			    	case "NetConnection.Connect.Success":
+			        	try{
+			            	trace("You've successfully connected to: "+ connection.uri);
+			               	stream = new NetStream(connection);
+						   	stream.bufferTime = 3;
+						   	stream.client = client;
+						   	client.onMetaData = on_metadata;
+						   	client.onCuePoint = on_cuepoint;
+						   	stream.addEventListener("netStatus", on_stream_status);
+						   	//stream.addEventListener("cuePoint", on_cuepoint);
+			               	init();
+			        	}
+			            catch (err:ArgumentError){
+			            	trace("Argument Error:"+err.message);
+			            	reset(); 	
+			            }
+						break;			   
+				   case "NetConnection.Connect.Failed":
+				   		setStatus("Server Connection Failed!");
+				   		break;
+		           case "NetConnection.Connect.Rejected":
+		               trace ("Oops! the connection was rejected");
+		               setStatus("Server Connection Failed!");
+		               break;
+		           case "NetConnection.Connect.AppShutdown":
+		           	   Alert.show("Error: Server Side Application has shut down!");
+		           	   break;
+		           case "NetConnection.Connect.Closed":
+		           	   trace("Connection closed: " + connection.uri);
+		           	   setStatus("Connection Closed");
+		           	   play_button.enabled = false;
+		           	   scrubber.enabled = false;
+		           	   break;
+				}
+			}
+			
+
+//----------on_stream_status()---------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function on_stream_status(event:NetStatusEvent):void {
+				trace(event.info.code);
+				switch (event.info.code){
+					case "NetStream.Buffer.Full":
+						trace("new buffer: "+xpandedBufferLength);
+						stream.bufferTime = xpandedBufferLength;
+						if (status_txt.text == "Timeout: Playback Paused"){
+							setStatus("Playing.");
+							hideSpinner();
+							isPaused = false;
+							stream.resume();
+							timer.start();
+							isTimeout = false;
+							kickstartCount = 0;
+							play_button.enabled = true;
+							scrubber.enabled = true;
+							hideSpinner();
+						}
+						break;
+					case "NetStream.Buffer.Flush":
+						stream.bufferTime = xpandedBufferLength;
+						break;				
+					case "NetStream.Buffer.Empty":
+						trace("reset buffer: "+startBufferLength);
+						stream.bufferTime = startBufferLength;
+						if (stream.time < duration ){
+							buffEmpty = true;
+						}
+						break;					
+					case "NetStream.Seek.Notify" :
+						trace("Buffer: "+ stream.bufferLength);
+						trace("reset buffer: "+startBufferLength);
+						stream.bufferTime = startBufferLength;
+						break;
+					case "NetStream.Pause.Notify":
+						trace("Buffer: "+ stream.bufferLength);
+						break;
+					case "NetStream.UnPause.Notify":
+						trace("Buffer: "+ stream.bufferLength);	
+						break;
+					case "NetStream.Play.Start":
+						trace("reset buffer: "+startBufferLength);
+						stream.bufferTime = startBufferLength;
+						isBuffering = false;
+						isEndOfVid = false;
+						//isScrubbed = false;			
+			            break;
+					case "NetStream.Play.Stop":
+						on_complete();						
+			            break;
+			        case "NetStream.Play.Reset":
+			        	trace("reset buffer: "+xpandedBufferLength);
+						stream.bufferTime = xpandedBufferLength;
+						break;
+			        case "NetStream.Play.Failed":
+			        	Alert.show("Playback Failed");
+			        	init();
+			        	break;
+					case "NetStream.Publish.BadName":
+			        	trace("Please check the name of the publishing stream" );
+			        	break;			        	
+			        case "NetSream.Play.InsufficientBW":
+			        	Alert.show("Insufficient Bandwidth");
+			        	break;
+			        case "NetStream.Play.StreamNotFound":
+			            trace("The server could not find the stream you specified"); 
+			            break;
+					case "NetStream.InvalidArg":
+					case "NetStream.Play.NoSupportedTrackFound":
+					case "NetStream.Play.StreamNotFound":
+					   	trace("The Server could not find the specified file");
+						reset();
+						break;
+				}
+				/*if (event.info.level == "error"){
+				       //stream.close();
+				       trace("An Error has occured");
+				       //initializeIt();
+				}*/
+			}
+				
+						
+
+		private function setBandwidth():void{
+			if ( kbaud > 10000 ){
+				startBufferLength = 4; 
+				xpandedBufferLength = 20;
+			}
+			else if ( kbaud > 3000 ){
+				//startBufferLength = 15; 
+				xpandedBufferLength = 15;
+			}
+			else if ( kbaud > 1500 ){
+				//startBufferLength = 15; 
+				xpandedBufferLength = 9;
+			}
+			else if ( kbaud > 700 ){
+				//startBufferLength = 15; 
+				xpandedBufferLength = 9;				
+			}
+			else if ( kbaud > 500 ){
+				//startBufferLength = 9; 
+				xpandedBufferLength = 6;				
+			}
+			else if ( kbaud > 300 ){
+				//startBufferLength = 6; 
+				xpandedBufferLength = 6;				
+			}
+			else if ( kbaud >= 56 ){
+				startBufferLength = 2; 
+				xpandedBufferLength = 4;				
+			}
+			else{
+				Alert.show("Bandwidth too low");
+				initializeIt();
+			}
+		}
+		
+		
+			
+//-------------------------------------------------------------------
+//	VIDEO STREAM EVENT HANDLERS
+//-------------------------------------------------------------------
+				
+			public function onBWDone(kbitDown:Number, deltaDown:Number, deltaTime:Number, latency:Number):void{
+				trace("onBWDone: kbitDown:"+kbitDown+" deltaDown:"+deltaDown+" deltaTime:"+deltaTime+" latency:"+latency);
+				testConnect.close();
+				BWisSet = true;
+				connection.connect(server,true);				
+				kbaud = kbitDown;
+				setBandwidth();				
+			}
+			public function onBWDone2(kbitDown:Number, deltaDown:Number, deltaTime:Number, latency:Number):void{
+				trace("onBWDone: kbitDown:"+kbitDown+" deltaDown:"+deltaDown+" deltaTime:"+deltaTime+" latency:"+latency);			
+			}
+			public function onBWCheck(latency:String):Number{
+				trace("BWCheck" + callCount);
+				setStatus("Connecting to server... "+callCount);
+				return ++callCount;				
+			}  
+			private function onAsyncError(e:AsyncErrorEvent):void{
+				trace("AsyncError: "+ e.text);	
+			}
+			private function onSecurityError(e:Event):void{
+				trace("SecurityError");
+			}
+			
+			private function on_metadata(infoObject:Object):void {
+			    vid.width = infoObject.width;
+			    vid.height = infoObject.height;
+				duration = infoObject.duration;
+				trace("Duration: "+infoObject.duration);
+				//trace("Width: "+infoObject.width + " Height: "+infoObject.height);
+				//trace("Framerate: "+infoObject.framerate);
+			}
+			
+			private function on_cuepoint(info:Object):void 
+			{ 			    
+			    trace("cuepoint: time=" + info.time + " name=" + info.name + " type=" + info.type);
+			    //trace("cuePoint: ");
+			    var key:String; 
+			    for (key in info) 
+			    { 
+			        trace(key + ": " + info[key]); 
+			    }
+			}
+
+
+
+//----------on_play_status()-----------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function on_play_status(infoObject:Object):void {
+				if ( infoObject.code == "NetStream.Play.Complete"){					
+						on_complete();
+				}
+				
+			}
+
+
+			
+//----------on_complete()--------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------			
+
+			private function on_complete():void{
+				if ( stream.time > duration -2){
+					stream.close();
+					timer.stop();	
+					setStatus("End of video.");
+					trace("------------------------------ END OF VIDEO");
+					play_button.label = "Play";
+					play_button.styleName = "play";
+					scrubber.enabled = false;
+					isPlaying = false;
+					isPaused = false;
+					isScrubbed = false;
+					isBuffering = false;
+					isEndOfVid = true;
+					hideSpinner();
+					if (isFullScreen){
+						normalScreen();
+					}
+				}
+			}
+
+
+
+//----------init()---------------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function init():void {
+			
+				vid = new Video();
+				
+				vid.width = 420;
+				vid.height = 315;
+				
+				uic.addEventListener(MouseEvent.DOUBLE_CLICK, fullScreen);
+				uic.addChild(vid);
+				if (uic.hasOwnProperty(spinner)){
+					uic.removeChild(spinner);
+				}
+				uic.addChild(spinner);
+				hideSpinner();
+				
+				
+				setStatus("Ready.");
+				isPlaying = false;
+				isPaused = false;
+
+				play_button.label = "Play";
+				play_button.enabled = enabled;
+
+
+				timer.reset();
+				timer_txt.text = " 0:00";
+				prevStreamTime = -1;
+				timePosition = 0;
+				
+				scrubber.value = 0;	
+				isScrubbed = false;
+				scrubber.enabled = false;
+				isEndOfVid = false;		
+			}
+			
+			
+			
+//-------------------------------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+
+			private function playHandler(e:Event):void{ playClip(); }
+			private function resetHandler(e:Event):void{ reset(); }
+			
+
+
+
+
+//----------playClip()-----------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function playClip():void{
+				if (videoList.selectedItem.label != "No videos"){					
+					videoFile = videoList.selectedItem.flv;
+					play_button.focusManager.setFocus(videoList);
+					if ( ( !isPlaying || selectionChanged ) && videoFile != null ){
+						vidPlaying = videoFile;
+						vid.attachNetStream(stream);
+						stream.play(videoFile);
+						stream.client.onPlayStatus = on_play_status;
+						timer.reset();
+						timer.start();
+						setStatus("Playing.");
+						play_button.label = "Pause";
+						play_button.styleName = "pause";
+						play_button.enabled = true;
+						isPlaying = true;
+						isPaused = false;
+						scrubber.enabled = true;
+						scrubber.alpha = 1.0;							
+					}
+					else{
+						if ( isPaused ){
+							stream.togglePause();				
+							timer.start();
+							isPaused = false;
+							isPlaying = true;
+							setStatus("Playing.");
+							play_button.label = "Pause";
+							play_button.styleName = "pause";			
+						}
+						else{
+							stream.togglePause();
+							timer.stop();
+							isPaused = true;
+							isPlaying = true;
+							setStatus("Paused.");
+							play_button.label = "Play";
+							play_button.styleName = "play";
+						}
+					}
+				}
+				else{
+					setStatus("No videos to play.");					
+				}
+				selectionChanged = false;
+			}
+
+
+//----------reset()--------------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function reset():void{
+
+				stream.close();
+				play_button.styleName = "play";
+				timer.stop();
+				initializeIt();							
+			}
+
+			private function displaySpinner():void{
+
+				spinner.visible = true;
+				spinner.play();
+				blurFilter = new BlurFilter(10,10,3);
+				filterArray = new Array();
+				filterArray.push(blurFilter);
+				vid.filters = filterArray;
+				vid.alpha = 0.5;					
+			}
+			
+			private function hideSpinner():void{				
+
+				spinner.visible = false;
+				spinner.stop();
+				vid.filters = undefined;
+				vid.alpha = 1;	
+			} 
+
+
+			
+//----------kickstart()----------------------------------------------
+//
+//	Kickstarts the video if buffer is not filling or stalling
+//
+//-------------------------------------------------------------------
+		
+			private function kickstart():void{
+															
+				if (kickstartCount<20){
+					
+					trace("KICKSTART --> "+kickstartCount);	
+					timer.stop();												
+					//scrubber.value = timePosition;
+					stream.seek(Math.floor(duration*scrubber.value/400));
+					stream.pause();						
+					timer.start();
+					stream.resume();
+					buffEmpty = false;
+					isTimeout = false;
+					kickstartCount++;
+				}
+				if (kickstartCount>=20){
+					if (!isPaused){
+						stream.pause();
+					}
+					isPaused = true;								
+					play_button.enabled = false;
+					scrubber.enabled = false;
+					trace("------------------------------ TIMEOUT ----------->");
+					setStatus("Timeout: Playback Paused");
+					timer.start();
+					stream.bufferTime = startBufferLength;
+					isBuffering = true;
+					isTimeout = true;
+					displaySpinner();
+					if( stallCount > 39 ){
+						kickstartCount = 0;
+					}
+				}
+			}
+			
+			
+			
+//----------checkForStall()------------------------------------------
+//
+//	Check for buffering and stalls in video playback
+//
+//-------------------------------------------------------------------
+
+			private function checkForStall():void{
+
+				if ( stream.bufferLength < stream.bufferTime ){
+					
+					var buffPercent:uint = Math.floor(stream.bufferLength/stream.bufferTime*100);
+					trace("Time: "+stream.time + "	Buffer: "+ stream.bufferLength);
+					
+					if (stream.bufferLength > prevBufferLength && stream.time > startBufferLength){
+						
+						makeEllipsis();
+						if (!isPaused && Math.round(stream.bufferLength) < startBufferLength && stream.time < duration - xpandedBufferLength){
+							setStatus("Buffering"+ ellipsis);
+							isBuffering = true;
+						}
+						stallCount = 0;
+						//setStatus("Buffering... "+ Math.floor(stream.bufferLength/stream.bufferTime*100)+"%");
+					}
+					
+					else if( prevBufferLength == stream.bufferLength ){
+						if ( prevStreamTime == stream.time ){
+							stallCount++;
+							trace("------------------------------ Stall: "+stallCount);
+						}
+						makeEllipsis();
+						if (!isPaused && Math.round(stream.bufferLength) < startBufferLength && stream.time < duration - xpandedBufferLength){
+							setStatus("Buffering"+ellipsis);
+							isBuffering = true;
+						}						
+					}
+					
+					else{
+						if ( stream.bufferLength >= startBufferLength ){
+							if (!isPaused){
+								setStatus("Playing.");
+								hideSpinner();
+							}
+						}
+						stallCount = 0;
+						kickstartCount = 0;
+						isBuffering = false;
+					}
+					
+					if ( buffEmpty || (stallCount > 6)){
+							if (buffEmpty && prevStreamTime == stream.time && prevBufferLength == stream.bufferLength ){
+								kickstart();
+								isBuffering = false;
+							}
+							else if (!buffEmpty){
+								kickstart();
+							}												
+					}
+										
+					prevBufferLength = stream.bufferLength;
+					prevStreamTime = stream.time;
+				}
+				
+				else{
+					if ( Math.round(stream.bufferLength) >= startBufferLength ){ 
+						if (!isPaused){setStatus("Playing.");}
+						kickstartCount = 0;
+					}
+					isBuffering = false;
+					buffEmpty = false;
+				}
+				if ( isBuffering || isTimeout ){
+					displaySpinner();
+					//play_button.enabled = false;
+				}
+				else{
+					hideSpinner();
+					//play_button.enabled = true;
+				}	
+			}
+			
+			private function makeEllipsis():void{
+				if (ellipsis == "....."){
+					ellipsis = ".";
+				}
+				else{
+					ellipsis = ellipsis+".";
+				}	
+			}
+			
+			
+//-------------------------------------------------------------------
+//	KEYBOARD COMMANDS
+//-------------------------------------------------------------------
+
+            private function submitKey(event:KeyboardEvent):void
+            {
+                if(event.charCode == 13){
+                       stream.close();
+                       timer.stop();
+                       uic.removeChild(vid);
+                       init();
+                       submit();
+                }
+            }
+			
+			private function playSelectKey(event:KeyboardEvent):void
+            {
+                if(event.charCode == 13){
+                	videoFile = videoList.selectedItem.flv;
+                	selectedVideo = videoList.selectedItem.label;
+                	videoPanel.title = selectedVideo;
+                	videoPanel.title = videoPanel.title.toUpperCase();
+                	//play_button.focusManager.setFocus(videoList);
+                	uic.removeChild(vid);
+                	stream.close();
+                	init();
+                	playClip();
+                }
+                
+                if(event.charCode == 32){
+                	playClip();
+                }
+            }
+			private function playPauseKey(event:KeyboardEvent):void{
+				if(event.charCode == 32){
+                	playClip();
+                }
+			}
+			private function ffRewind(event:KeyboardEvent):void{
+                if (!isTimeout && !isEndOfVid){
+	                if(event.keyCode == 37){
+						onScrubTime = timer.currentCount;
+						stream.pause();
+						timer.stop();
+						isPaused = true;
+						isScrubbed = true;
+						if (scrubber.value > 40 ){
+							scrubber.value = scrubber.value - 40;
+							timePosition = scrubber.value;
+						}
+						else{						
+							scrubber.value = 0;
+							timePosition = scrubber.value;
+						}
+						trace("Rewind");
+						stream.seek(Math.floor(duration*timePosition/400));
+						timer.start();
+						setStatus("Playing.");
+						play_button.label="Pause";
+						play_button.styleName = "pause";
+						isPaused = false;	
+					}
+					if(event.keyCode == 39){
+						onScrubTime = timer.currentCount;
+						stream.pause();
+						timer.stop();
+						isPaused = true;
+						isScrubbed = true;	
+						if (scrubber.value < 360){
+							scrubber.value = scrubber.value + 40;
+							timePosition = scrubber.value;
+						}
+						else{
+							scrubber.value = 400;
+							timePosition = scrubber.value;
+							isEndOfVid = true;
+						}
+						trace("Fast Forward");
+						stream.seek(Math.floor(duration*timePosition/400));
+						timer.start();
+						setStatus("Playing.");
+						play_button.label="Pause";
+						play_button.styleName = "pause";
+						isPaused = false;				
+					}
+                }
+			}
+			
+						
+			private function submit():void{
+				huid = huidInput.text;
+				getVideoList.url = "http://platypo.us/video/videoList.php?id="+huid;
+				getVideoList.send();
+			}
+
+
+//-------------------------------------------------------------------
+//	SLIDER FUNCTIONS:
+//-------------------------------------------------------------------
+			
+			private function onScrub(event:SliderEvent):void{
+				onScrubTime = timer.currentCount;
+				timePosition = scrubber.value;
+				stream.close();
+				isScrubbed = true;
+				isPaused = false;
+				isPlaying = true;
+				stream.play(vidPlaying,Math.floor(duration*timePosition/400));
+				timer.start();
+				play_button.label = "Pause";
+				play_button.styleName = "pause";
+				setStatus("Playing.");
+				scrubber.focusManager.setFocus(videoList);
+			}
+			
+			private function sliderPress():void{
+				stream.pause();
+				timer.stop();
+				isPaused = true;
+				isScrubbed = false;
+				
+			}
+			private function sliderRelease():void{
+				stream.seek(Math.floor(duration*scrubber.value/400));
+				stream.resume();
+				timer.start();
+				isPaused = false;
+				play_button.styleName = "pause";
+				scrubber.focusManager.setFocus(videoList);
+			}
+			private function dataTipUpdate(item:Object):String{
+
+				var tipPos:Number = Number(item.toString());
+				var tipMin:uint = (duration*(tipPos/400))/60;
+				var tipSec:uint = (duration*(tipPos/400))%60;
+				var tipMinStr:String;
+				var tipSecStr:String;
+				var tipTime:String;
+				
+				if (tipMin < 10 ){
+					tipMinStr = " " + String(tipMin);	
+				}
+				else{
+					tipMinStr = String(tipMin);
+				}
+				if (tipSec < 10 ){
+					tipSecStr = "0" + String(tipSec);	
+				}
+				else{
+					tipSecStr = String(tipSec);
+				}
+				tipTime = tipMinStr+":"+ tipSecStr;
+				return 	tipTime;
+			}
+
+
+
+//----------updateTimer()--------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function updateTimer(e:TimerEvent):void{
+				
+				stream.client.onCuePoint = on_cuepoint;
+				minutes = stream.time / 60;
+				seconds = stream.time % 60;
+				hour = stream.time /3600;
+								
+				checkForStall();				
+				
+				if ( seconds < 10 ){
+					secondStr = "0" + String(seconds);
+				}
+				else{
+					secondStr = String(seconds);
+				}
+				if ( minutes < 10 ){
+					minuteStr = " " + String(minutes);
+				}
+				else{
+					minuteStr = String(minutes);
+				}
+			
+					time = minuteStr +":"+ secondStr;
+					timer_txt.text = time;
+					if (isPlaying && !isPaused && !isScrubbed){
+						scrubber.value = (stream.time / duration) *  scrubber.width;
+					}
+					if (isScrubbed == true ){
+						if ( timer.currentCount > onScrubTime + 9 ){
+							isScrubbed = false;
+						}
+					}
+			}
+	
+
+
+
+//-------------------------------------------------------------------
+//	VISEOLIST FUNCTIONS:
+//-------------------------------------------------------------------
+
+		private function videoListResponse(event:ResultEvent):void{
+						
+			var videoLength:uint = event.result.videoList.video.length;
+			
+			if (videoLength <= 1) {
+				videoList.dataProvider = event.result.videoList.video as Object
+			}
+			/*else if(videoLength == 0 ){
+				videoList.dataProvider.label = "";
+				videoList.dataProvider.flv = "";
+				videoList.dataProvider.duration = "";
+			}*/
+			else {
+				videoData = event.result.videoList.video as ArrayCollection;
+			}
+			
+			studentData = event.result.studentInfo.student.label as String;			
+			loginStatus.text = "Welcome " + studentData;
+			videoList.selectedIndex = 0;
+			videoList.focusManager.setFocus(videoList);
+			videoList.toolTip = "Double-click to play"; 
+		}
+		
+		private function selectVideo(event:ListEvent):void{
+			videoFile = event.currentTarget.selectedItem.flv;
+			selectedVideo = event.currentTarget.selectedItem.label;
+			prevVideo = videoFile;
+			videoPanel.title = selectedVideo;
+			videoPanel.title = videoPanel.title.toUpperCase();
+			
+			if (isPlaying || status_txt.text == "End of video."){
+				uic.removeChild(vid);
+				reset();			
+			}
+			if ( selectedVideo != "No videos" ){
+				fileDownload.init(downloadProgress, startDownload,'http://platypo.us/video/downloadQueue/'+videoFile, videoFile);
+				startDownload.enabled = true;
+			}
+			else{
+				startDownload.enabled = false;
+			}					
+		}
+		
+		private function changeSelectedVideo(event:ListEvent):void{
+			videoFile = event.currentTarget.selectedItem.flv;
+			selectedVideo = event.currentTarget.selectedItem.label;
+			//videoPanel.title = selectedVideo;
+			//videoPanel.title = videoPanel.title.toUpperCase();
+			
+			if ( videoFile != prevVideo ){
+				selectionChanged = true;
+				prevVideo = videoFile;
+			}
+			else {
+				selectionChanged = false;								
+			}
+			if (status_txt.text == "End of video."){
+				uic.removeChild(vid);
+				reset();			
+			}
+			if ( selectedVideo != "No videos" ){
+				fileDownload.init(downloadProgress, startDownload,'http://platypo.us/video/downloadQueue/'+videoFile, videoFile);
+				startDownload.enabled = true;
+			}
+			else{
+				startDownload.enabled = false;
+			}					
+		}
+		
+		private function doubleClickVideo(event:ListEvent):void{
+			videoFile = event.currentTarget.selectedItem.flv;
+			selectedVideo = event.currentTarget.selectedItem.label;
+			prevVideo = videoFile;
+			videoPanel.title = selectedVideo;
+			videoPanel.title = videoPanel.title.toUpperCase();			
+			
+			if (isPlaying || status_txt.text == "End of video."){
+				//try{
+					
+					//uic.removeChild(vid);
+					reset();
+					play_button.focusManager.setFocus(videoList);
+					playClip();
+				//}
+				/*catch(err:ArgumentError){
+					trace("Argument Error:"+err.message);					
+					if( uic.hasOwnProperty(vid) ){
+						uic.removeChild(vid);
+					}
+					reset();
+					init();
+					play_button.focusManager.setFocus(videoList);
+					playClip();
+				}*/				
+			}
+			else{
+				play_button.focusManager.setFocus(videoList);
+				//isPlaying = false;
+				playClip();
+			}					
+		}
+		
+		
+		
+//-------------------------------------------------------------------
+//	LOGIN FIELD FUNCTIONS:
+//-------------------------------------------------------------------		
+
+		private function textFocus(e:FocusEvent):void{			
+			
+			if (e.currentTarget == passInput ){				
+				e.currentTarget.text = "";
+				e.currentTarget.displayAsPassword=true;
+			}
+			else{				
+				e.currentTarget.text = "";
+				e.currentTarget.displayAsPassword=false;
+			}
+		}
+		private function textOutFocus(e:FocusEvent):void{
+			
+			if ( passInput.text == "" ){
+				e.currentTarget.text = "PASSWORD"; 
+				e.currentTarget.displayAsPassword=false;
+			}
+			if ( huidInput.text == "" ){
+				e.currentTarget.text = "HUID";
+			}
+		}
+		
+		private function onTextChange(e:Event):void{
+			if (e.currentTarget == huidInput &&
+			e.currentTarget.text.length >= 8){
+				huidInput.focusManager.setFocus(passInput);
+			}
+		}
+		
+		private function moveDownloadResponse(e:ResultEvent):void{
+			switch(e.result){
+				case "moved":										
+					break;
+				case "error":
+					downloadProgress.label="Download error";
+					break;
+			}
+			
+		}
+		private function initDownload():void{
+			uic.removeChild(vid);
+			reset();
+			//startDownload.focusManager.setFocus(videoList);
+			moveDownloadFile.url = "http://platypo.us/video/download.php?file="+videoFile;
+			moveDownloadFile.send(); 
+										
+		}
+
+
+		
+//-------------------------------------------------------------------
+//	FULLSCREEN FUNCTIONS:
+//-------------------------------------------------------------------		
+
+	private function fullScreen(event:MouseEvent):void{
+		var screenRectangle:Rectangle = new Rectangle( uic.x, uic.y, uic.width, uic.height );
+		this.stage.fullScreenSourceRect = screenRectangle;
+		this.stage.addEventListener(FullScreenEvent.FULL_SCREEN, resize);
+		
+		try{
+			if ( !isFullScreen ){
+				this.removeAllChildren();		
+				this.addChild(uic);	
+				this.styleName = "fullscreen";
+				this.verticalScrollPolicy="off" 
+				this.horizontalScrollPolicy="off"
+				this.stage.displayState = StageDisplayState.FULL_SCREEN;
+				isFullScreen = true;
+				uic.toolTip = "";
+			}
+			else{
+				normalScreen();
+			}
+		}
+		catch (err:SecurityError){
+			trace("full screen security error");
+		}
+	}
+
+	private function resize(event:FullScreenEvent):void{
+		if (isFullScreen){
+			normalScreen();
+		}
+	}
+	
+	private function normalScreen():void{
+			this.removeAllChildren();
+			this.addChild(mainContainer);
+			videoPanel.addChildAt(uic,0);
+			this.stage.displayState = StageDisplayState.NORMAL;
+			this.styleName = "normal";
+			isFullScreen = false;
+			uic.toolTip = "Double-click for Full Screen";
+	}
+	
+	
+							
+//----------setStatus()----------------------------------------------
+//
+//
+//
+//-------------------------------------------------------------------
+			
+			private function setStatus(msg:String):void{
+				status_txt.text = msg;
+			}
+
+	
+				
+    ]]>
+    </mx:Script>
+    <mx:Style source="videoPlayer.css"/>
+	<mx:Style source="play_button.css"/>
+	<mx:Style source="pause_button.css"/>
+
+	<mx:HTTPService id="getVideoList" result="videoListResponse(event)" />
+	<mx:HTTPService id="moveDownloadFile" result="moveDownloadResponse(event)" />
+	
+	<download:FileDownload id="fileDownload" />
+	
+	<mx:VBox verticalGap="15" id="mainContainer" focusEnabled="false">
+	<mx:Canvas width="710" height="100">
+		<mx:Image source="assets/header.png" autoLoad="true" scaleContent="true" width="710" height="100" id="header"/>
+	
+			<mx:Form id="login" styleName="formItemStyle" x="475" y="30">
+						<mx:Text text="Please log in:" id="loginStatus"  styleName="loginTxt" textAlign="right" width="100%"/>
+			<mx:Spacer width="100%"/>
+			<mx:FormItem direction="horizontal" styleName="formItemStyle" id="login_params"  height="100%"> 
+
+			<mx:TextInput width="80"  text="HUID"  cornerRadius="6" id="huidInput" maxChars="8"  themeColor="#63A6B9" />
+			<mx:TextInput id="passInput" width="80"  text="PASSWORD" cornerRadius="6"   themeColor="#63A6B9" />
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Canvas>
+
+	<mx:HBox horizontalGap="15" focusEnabled="false">
+
+		<mx:Panel id="videoPanel" visible="true" title="VIDEO PLAYER" layout="absolute" alpha="1.0" focusEnabled="false" styleName="videoPanel">			
+			<mx:UIComponent id="uic" alpha="1.0" left="0" top="0" styleName="fullscreen" doubleClickEnabled="true" toolTip="Double-click for Full Screen" focusEnabled="false" width="420" height="311">
+			</mx:UIComponent>
+		    <mx:ApplicationControlBar width="420" x="0" y="285" height="20" alpha="0.7" id="sliderControl" focusEnabled="false" styleName="sliderBar">
+		        <mx:HSlider width="400" id="scrubber"  liveDragging="false" thumbPress="sliderPress()" thumbRelease="sliderRelease()"
+		        dataTipFormatFunction="dataTipUpdate" change="onScrub(event)" alpha="1.0" minimum="0" maximum="400" height="50%"/>
+		    </mx:ApplicationControlBar>
+			<mx:ControlBar x="0" y="323" cornerRadius="0" focusEnabled="false" verticalAlign="middle" styleName="playControlBar">
+				<mx:Button label="Play" id="play_button" toolTip="Play" styleName="play" cornerRadius="0"/>
+				<mx:Spacer width="5"/>
+				<mx:HBox width="100%" alpha="1.0" styleName="displayPane2">				
+					<mx:Spacer width="10"/>
+					<mx:Text id="status_txt" styleName="status"/>				
+					<mx:Spacer width="100%"/>
+				
+				<mx:Spacer width="10"/>
+				</mx:HBox>	
+				<mx:HBox styleName="displayPane">
+					<mx:Text id="timer_txt" width="60" text=" 0:00" styleName="timer" textAlign="center" alpha="1.0" color="#FFFFFF" fontWeight="normal" fontSize="13"/>
+				</mx:HBox>									    
+			</mx:ControlBar>
+		</mx:Panel>
+	
+	
+	   <mx:Panel width="250" height="100%" layout="absolute" alpha="1.0" id="listPanel" styleName="dataPanel">
+		<mx:DataGrid height="100%" width="100%" x="0" y="0" 
+			id="videoList" dataProvider="{videoData}" sortableColumns="false"
+			doubleClickEnabled="true" itemClick="selectVideo(event);" itemDoubleClick="doubleClickVideo(event);" change="changeSelectedVideo(event)" styleName="videoDataGrid">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Videos" dataField="label" dataTipField="toolTip" />
+				<mx:DataGridColumn headerText="" dataField="duration" dataTipField="toolTip" />
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:ControlBar cornerRadius="0" focusEnabled="false">
+			<mx:Button id="startDownload" click="initDownload();fileDownload.startDownload();" label="Download" enabled="false"  focusEnabled="false"/>
+			<mx:ProgressBar id="downloadProgress" label="" mode="manual"  width="100%" height="20" alpha="0.5" visible="false"  focusEnabled="false" styleName="downloadBar"/>
+			<mx:Text id="status_txt0" styleName="stat0"/>		    
+		</mx:ControlBar>
+	  </mx:Panel>
+
+	</mx:HBox>
+	</mx:VBox>
+	<mx:Style source="play_button.css"/>
+</mx:Application>

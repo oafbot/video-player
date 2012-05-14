@@ -1,0 +1,26 @@
+
+Button.play
+{
+	color: #63A6B9;
+	fillAlphas: 0.65, 0.65, 1.0, 1.0;
+	fillColors: #FFFFFF, #CBE5EB;
+	themeColor: #63A6B9;
+	textRollOverColor: #96C9D8;
+	textSelectedColor: #4F808E;
+	borderColor: #C4DBDC;
+	paddingLeft: 35;
+	disabledColor: #88BCBD;
+	upSkin: Embed(source='assets/play_button.swf', symbol='play_up');
+	overSkin: Embed(source='assets/play_button.swf', symbol='play_over');
+	downSkin: Embed(source='assets/play_button.swf', symbol='play_down');
+	disabledSkin: Embed(source='assets/play_button.swf', symbol='play_disabled');
+	horizontalGap: 0;
+	selectedUpSkin: Embed(source='assets/play_button.swf', symbol='play_up');
+	selectedOverSkin: Embed(source='assets/play_button.swf', symbol='play_over');
+	selectedDownSkin: Embed(source='assets/play_button.swf', symbol='play_down');
+	selectedDisabledSkin: Embed(source='assets/play_button.swf', symbol='play_disabled');
+	paddingTop: 0;
+	cornerRadius: 0;
+
+
+}

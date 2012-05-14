@@ -1,0 +1,27 @@
+/* CSS file */
+
+Button.pause
+{
+	color: #63A6B9;
+	fillAlphas: 0.65, 0.65, 1.0, 1.0;
+	fillColors: #FFFFFF, #CBE5EB;
+	themeColor: #63A6B9;
+	textRollOverColor: #96C9D8;
+	textSelectedColor: #4F808E;
+	borderColor: #C4DBDC;
+	paddingLeft: 35;
+	disabledColor: #88BCBD;
+	upSkin: Embed(source='assets/pause_button.swf', symbol='pause_up');
+	overSkin: Embed(source='assets/pause_button.swf', symbol='pause_over');
+	downSkin: Embed(source='assets/pause_button.swf', symbol='pause_down');
+	disabledSkin: Embed(source='assets/pause_button.swf', symbol='pause_disabled');
+	horizontalGap: 0;
+	selectedUpSkin: Embed(source='assets/pause_button.swf', symbol='pause_up');
+	selectedOverSkin: Embed(source='assets/pause_button.swf', symbol='pause_over');
+	selectedDownSkin: Embed(source='assets/pause_button.swf', symbol='pause_down');
+	paddingTop: 0;
+	cornerRadius: 0;
+	selectedDisabledSkin: Embed(source='assets/pause_button.swf', symbol='pause_disabled');
+
+
+}

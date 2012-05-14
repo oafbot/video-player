@@ -1,0 +1,267 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>videoPlayer.css</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="CSSComment">/* CSS file */</span>
+
+<span class="CSSSelector">global</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">padding-top</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-bottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-right</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-left</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>        
+<span class="CSSDelimiters">}</span>
+
+<span class="CSSSelector">.normal</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">padding-top</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">20</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-bottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">20</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-right</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">20</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-left</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">20</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundGradientAlphas</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1.0, 1.0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundGradientColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C1E7EA, #DFEAED</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">none</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">center</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;Helvetica Neue&quot;</span><span class="CSSDelimiters">;</span>                      
+<span class="CSSDelimiters">}</span>
+ 
+<span class="CSSSelector">ApplicationControlBar.loginBar
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillAlphas</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1.0, 1.0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C6CECE, #EAF0F0</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Panel.videoPanel
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">backgroundAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1.0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#000000</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#FFFFFF</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThickness</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">7</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">center</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">11</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.75</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">roundedBottomCorners</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">true</span><span class="CSSDelimiters">;</span>
+    <span class="CSSComment">/*borderSkin: Embed(source=&apos;assets/vidPan.swf&apos;, symbol=&apos;Panel_borderSkin&apos;);*/</span>
+    <span class="CSSProperty_Name">backgroundSize</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;100%&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThicknessLeft</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSComment">/*backgroundImage: Embed(source=&apos;assets/vidPan.swf&apos;, symbol=&apos;Panel_borderSkin&apos;);*/</span>
+    
+<span class="CSSDelimiters">}</span>
+
+
+<span class="CSSSelector">Panel.dataPanel
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#FFFFFF</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#FFFFFF</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">7</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">11</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.75</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">roundedBottomCorners</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">true</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">DataGrid.videoDataGrid
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">alternatingItemColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#F7F7F7, #E5F4F4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">13</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">textAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">left</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">themeColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">selectionDisabledColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C4DBDC</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+
+<span class="CSSSelector">Text.timer
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#FFFFFF</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">13</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">leading</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Button
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillAlphas</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.65, 0.65, 1.0, 1.0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#FFFFFF, #CBE5EB</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">themeColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">textRollOverColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#4F808E</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">textSelectedColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#4F808E</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C4DBDC</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSComment">/*Button.play
+{
+    color: #63A6B9;
+    fillAlphas: 0.65, 0.65, 1.0, 1.0;
+    fillColors: #FFFFFF, #CBE5EB;
+    themeColor: #63A6B9;
+    textRollOverColor: #96C9D8;
+    textSelectedColor: #4F808E;
+    borderColor: #C4DBDC;
+    paddingLeft: 35;
+    disabledColor: #88BCBD;
+    disabled: Embed(source=&quot;../libs/playbutton/play_button.swf&quot;, symbol=&quot;play_disabled&quot;);
+    upSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_up&apos;);
+    overSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_over&apos;);
+    downSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_down&apos;);
+    disabledSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_disabled&apos;);
+    selectedUpSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_up&apos;);
+    selectedOverSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_over&apos;);
+    selectedDownSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_down&apos;);
+    selectedDisabledSkin: Embed(source=&apos;../libs/playbutton/play_button.swf&apos;, symbol=&apos;play_disabled&apos;);
+}*/</span>
+<span class="CSSSelector">HSlider
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#6F9292</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillAlphas</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1.0, 0.5, 0.5, 0.5</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">invertThumbDirection</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">true</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">showTrackHighlight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">true</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">themeColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#A3D6E5</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">ApplicationControlBar.sliderBar
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">3</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillAlphas</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.1, 0.8</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fillColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#CBE5EB, #C1E7EA</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">themeColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#009DFF</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingBottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingLeft</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">8</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingTop</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">.playControlBar</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">padding-top</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-bottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalGap</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1.0</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Text.loginTxt
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">11</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+
+<span class="CSSSelector">.fullscreen</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#000000</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundGradientColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#000000, #000000</span><span class="CSSDelimiters">;</span> 
+    <span class="CSSProperty_Name">padding-top</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-bottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-right</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-left</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+             
+<span class="CSSDelimiters">}</span>
+
+<span class="CSSSelector">.formItemStyle </span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-top</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">padding-bottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span> 
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">6</span><span class="CSSDelimiters">;</span>        
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">ProgressBar.downloadBar
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSS@font-face">@font-face</span>
+<span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;Helvetica Neue&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">src</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">local(</span><span class="CSSString">&quot;Helvetica Neue&quot;</span><span class="CSSProperty_Value">)</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Text.status
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">12</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Text.stat0
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">12</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">DataGrid.list
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">alternatingItemColors</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#F7F7F7, #E5F4F4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">13</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">textAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">left</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">themeColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">.displayPane2
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">backgroundAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">solid</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThickness</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingTop</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">2</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingBottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalGap</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundSize</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;100%&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">left</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">verticalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">middle</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">.displayPane
+</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">backgroundAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.5</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">solid</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThickness</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">1</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">paddingTop</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">3</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalGap</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundImage</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">Embed(source=</span><span class="CSSString">&quot;assets/background.png&quot;</span><span class="CSSProperty_Value">)</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">auto</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">horizontalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">left</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">verticalAlign</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">middle</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">leading</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">12</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSS@font-face">@font-face</span>
+<span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">src</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">local(</span><span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSProperty_Value">)</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSS@font-face">@font-face</span>
+<span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">fontFamily</span><span class="CSSDelimiters">:</span> <span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontStyle</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">normal</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">src</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">local(</span><span class="CSSString">&quot;OCR A Std&quot;</span><span class="CSSProperty_Value">)</span><span class="CSSDelimiters">;</span>
+<span class="CSSDelimiters">}</span>
+<span class="CSSSelector">Alert</span><span class="CSSDelimiters">{</span>
+    <span class="CSSProperty_Name">borderColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C4DBDC</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundColor</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#C4DBDC</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">roundedBottomCorners</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">true</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">cornerRadius</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">4</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThicknessLeft</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThicknessRight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThicknessTop</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderThicknessBottom</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">color</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">#63A6B9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontWeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">bold</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">fontSize</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">13</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">controlBarStyleName</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">alertControlBar</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">titleStyleName</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">alertTitle</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">headerHeight</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">10</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">backgroundAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">borderAlpha</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">0.9</span><span class="CSSDelimiters">;</span>
+    <span class="CSSProperty_Name">statusStyleName</span><span class="CSSDelimiters">:</span> <span class="CSSProperty_Value">alertStatus</span><span class="CSSDelimiters">;</span>        
+<span class="CSSDelimiters">}</span></pre></body>
+</html>

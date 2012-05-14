@@ -1,0 +1,130 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FileDownload.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span>.<span class="ActionScriptDefault_Text">download</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">events</span>.<span class="ActionScriptOperator">*</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">net</span>.<span class="ActionScriptDefault_Text">FileReference</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">net</span>.<span class="ActionScriptDefault_Text">URLLoader</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">net</span>.<span class="ActionScriptDefault_Text">URLLoaderDataFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">net</span>.<span class="ActionScriptDefault_Text">URLRequest</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span>.<span class="ActionScriptDefault_Text">net</span>.<span class="ActionScriptDefault_Text">URLRequestMethod</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">controls</span>.<span class="ActionScriptDefault_Text">Button</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">controls</span>.<span class="ActionScriptDefault_Text">ProgressBar</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">core</span>.<span class="ActionScriptDefault_Text">UIComponent</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">FileDownload</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">DOWNLOAD_URL</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">fr</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">FileReference</span>;
+        <span class="ActionScriptComment">// Define reference to the download ProgressBar component.
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">pb</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">ProgressBar</span>;
+        <span class="ActionScriptComment">// Define reference to the &quot;Cancel&quot; button which will immediately stop the download in progress.
+</span>        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">btn</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Button</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">fileName</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">loader</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">URLLoader</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">request</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">URLRequest</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">FileDownload</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Set references to the components, and add listeners for the OPEN,
+         * PROGRESS, and COMPLETE events.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">init</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">pb</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">ProgressBar</span>, <span class="ActionScriptDefault_Text">btn</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Button</span>, <span class="ActionScriptDefault_Text">dURL</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span>, <span class="ActionScriptDefault_Text">fileName</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Set up the references to the progress bar and cancel button, which are passed from the calling script.
+</span>            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">pb</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">pb</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">btn</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">btn</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">fileName</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">fileName</span>;
+            
+            <span class="ActionScriptDefault_Text">DOWNLOAD_URL</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">dURL</span>;
+
+            <span class="ActionScriptDefault_Text">fr</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FileReference</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">fr</span>.<span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span>.<span class="ActionScriptDefault_Text">OPEN</span>, <span class="ActionScriptDefault_Text">openHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">fr</span>.<span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ProgressEvent</span>.<span class="ActionScriptDefault_Text">PROGRESS</span>, <span class="ActionScriptDefault_Text">progressHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">fr</span>.<span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span>.<span class="ActionScriptDefault_Text">COMPLETE</span>, <span class="ActionScriptDefault_Text">completeHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Immediately cancel the download in progress and disable the cancel button.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">cancelDownload</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">fr</span>.<span class="ActionScriptDefault_Text">cancel</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">label</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">&quot;DOWNLOAD CANCELLED&quot;</span>;
+            <span class="ActionScriptDefault_Text">btn</span>.<span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">deleteTemp</span><span class="ActionScriptBracket/Brace">()</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Begin downloading the file specified in the DOWNLOAD_URL constant.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">startDownload</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">request</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">URLRequest</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">request</span>.<span class="ActionScriptDefault_Text">url</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">DOWNLOAD_URL</span>;
+            <span class="ActionScriptDefault_Text">fr</span>.<span class="ActionScriptDefault_Text">download</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">request</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * When the OPEN event has dispatched, change the progress bar&apos;s label
+         * and enable the &quot;Cancel&quot; button, which allows the user to abort the
+         * download operation.
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">openHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">label</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">&quot;DOWNLOADING %3%%&quot;</span>;
+            <span class="ActionScriptComment">//btn.enabled = true;
+</span>            <span class="ActionScriptDefault_Text">btn</span>.<span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * While the file is downloading, update the progress bar&apos;s status and label.
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">progressHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">ProgressEvent</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">setProgress</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>.<span class="ActionScriptDefault_Text">bytesLoaded</span>, <span class="ActionScriptDefault_Text">event</span>.<span class="ActionScriptDefault_Text">bytesTotal</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * Once the download has completed, change the progress bar&apos;s label and
+         * disable the &quot;Cancel&quot; button since the download is already completed.
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">completeHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">//pb.label = &quot;DOWNLOAD COMPLETE&quot;;
+</span>            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">setProgress</span><span class="ActionScriptBracket/Brace">(</span>0, 100<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptComment">//btn.enabled = false;
+</span>            <span class="ActionScriptDefault_Text">btn</span>.<span class="ActionScriptDefault_Text">enabled</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            <span class="ActionScriptDefault_Text">pb</span>.<span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">deleteTemp</span><span class="ActionScriptBracket/Brace">()</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">deleteTemp</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span><span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">request</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">&quot;http://platypo.us/video/unlinkTemp.php?delete=&quot;</span><span class="ActionScriptOperator">+</span><span class="ActionScriptDefault_Text">fileName</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">request</span>.<span class="ActionScriptDefault_Text">method</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">URLRequestMethod</span>.<span class="ActionScriptDefault_Text">GET</span>;
+            <span class="ActionScriptDefault_Text">loader</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLLoader</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptDefault_Text">loader</span>.<span class="ActionScriptDefault_Text">dataFormat</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">URLLoaderDataFormat</span>.<span class="ActionScriptDefault_Text">TEXT</span>;
+            <span class="ActionScriptDefault_Text">loader</span>.<span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span>.<span class="ActionScriptDefault_Text">COMPLETE</span>, <span class="ActionScriptDefault_Text">requestComplete</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptComment">//loader.addEventListener(&quot;httpStatus&quot;, onHTTPStatus);
+</span>            <span class="ActionScriptComment">//loader.addEventListener(&quot;complete&quot;, requestComplete);
+</span>            <span class="ActionScriptDefault_Text">loader</span>.<span class="ActionScriptDefault_Text">load</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">request</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">requestComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">evt</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">evt</span>.<span class="ActionScriptDefault_Text">target</span>.<span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">&quot;deleted&quot;</span><span class="ActionScriptBracket/Brace">){</span>
+                <span class="ActionScriptDefault_Text">loader</span>.<span class="ActionScriptDefault_Text">close</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptBracket/Brace">}</span>            
+            <span class="ActionScriptReserved">else</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">loader</span>.<span class="ActionScriptDefault_Text">close</span><span class="ActionScriptBracket/Brace">()</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+              
+        <span class="ActionScriptBracket/Brace">}</span>       
+
+    <span class="ActionScriptBracket/Brace">}</span>    <span class="ActionScriptComment">//class
+</span><span class="ActionScriptBracket/Brace">}</span>    <span class="ActionScriptComment">//package
+</span></pre></body>
+</html>

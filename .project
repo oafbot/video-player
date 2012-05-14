@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>VIDEO_PLAYER</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>bin-release2</name>
+			<type>2</type>
+			<location>/Users/laika/Desktop/player</location>
+		</link>
+		<link>
+			<name>bin-release4</name>
+			<type>2</type>
+			<location>/Users/laika/Desktop/video/player</location>
+		</link>
+		<link>
+			<name>bin-release1</name>
+			<type>2</type>
+			<location>/Users/laika/Desktop</location>
+		</link>
+		<link>
+			<name>bin-release3</name>
+			<type>2</type>
+			<location>/Users/laika/Desktop/video</location>
+		</link>
+	</linkedResources>
+</projectDescription>

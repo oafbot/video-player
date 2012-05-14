@@ -1,0 +1,257 @@
+/* CSS file */
+
+global{
+	padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    padding-left: 0;		
+}
+
+.normal{
+    padding-top: 20;
+    padding-bottom: 20;
+    padding-right: 20;
+    padding-left: 20;
+	backgroundGradientAlphas: 1.0, 1.0;
+	backgroundGradientColors: #C1E7EA, #DFEAED;
+	borderStyle: none;
+	color: #63A6B9;
+	horizontalAlign: center;
+	fontFamily: "Helvetica Neue";   		           
+}
+ 
+ApplicationControlBar.loginBar
+{
+	cornerRadius: 4;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #C6CECE, #EAF0F0;
+}
+Panel.videoPanel
+{
+	backgroundAlpha: 1.0;
+	backgroundColor: #000000;
+	borderColor: #FFFFFF;
+	borderThickness: 0;
+	color: #63A6B9;
+	cornerRadius: 7;
+	horizontalAlign: center;
+	fontSize: 11;
+	fontWeight: bold;
+	borderAlpha: 0.75;
+	roundedBottomCorners: true;
+	/*borderSkin: Embed(source='assets/vidPan.swf', symbol='Panel_borderSkin');*/
+	backgroundSize: "100%";
+	borderThicknessLeft: 10;
+	/*backgroundImage: Embed(source='assets/vidPan.swf', symbol='Panel_borderSkin');*/
+	
+}
+
+
+Panel.dataPanel
+{
+	backgroundColor: #FFFFFF;
+	borderColor: #FFFFFF;
+	cornerRadius: 7;
+	fontSize: 11;
+	fontWeight: bold;
+	borderAlpha: 0.75;
+	roundedBottomCorners: true;
+}
+DataGrid.videoDataGrid
+{
+	alternatingItemColors: #F7F7F7, #E5F4F4;
+	fontSize: 13;
+	textAlign: left;
+	themeColor: #63A6B9;
+	color: #63A6B9;
+	selectionDisabledColor: #C4DBDC;
+	fontWeight: normal;
+}
+
+Text.timer
+{
+	color: #FFFFFF;
+	fontSize: 13;
+	fontWeight: bold;
+	fontFamily: "OCR A Std";
+	leading: 0;
+}
+Button
+{
+	color: #63A6B9;
+	fillAlphas: 0.65, 0.65, 1.0, 1.0;
+	fillColors: #FFFFFF, #CBE5EB;
+	themeColor: #63A6B9;
+	textRollOverColor: #4F808E;
+	textSelectedColor: #4F808E;
+	borderColor: #C4DBDC;
+}
+/*Button.play
+{
+	color: #63A6B9;
+	fillAlphas: 0.65, 0.65, 1.0, 1.0;
+	fillColors: #FFFFFF, #CBE5EB;
+	themeColor: #63A6B9;
+	textRollOverColor: #96C9D8;
+	textSelectedColor: #4F808E;
+	borderColor: #C4DBDC;
+	paddingLeft: 35;
+	disabledColor: #88BCBD;
+	disabled: Embed(source="../libs/playbutton/play_button.swf", symbol="play_disabled");
+	upSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_up');
+	overSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_over');
+	downSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_down');
+	disabledSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_disabled');
+	selectedUpSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_up');
+	selectedOverSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_over');
+	selectedDownSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_down');
+	selectedDisabledSkin: Embed(source='../libs/playbutton/play_button.swf', symbol='play_disabled');
+}*/
+HSlider
+{
+	borderColor: #6F9292;
+	fillAlphas: 1.0, 0.5, 0.5, 0.5;
+	invertThumbDirection: true;
+	showTrackHighlight: true;
+	themeColor: #A3D6E5;
+}
+ApplicationControlBar.sliderBar
+{
+	cornerRadius: 3;
+	fillAlphas: 0.1, 0.8;
+	fillColors: #CBE5EB, #C1E7EA;
+	themeColor: #009DFF;
+	paddingBottom: 0;
+	paddingLeft: 8;
+	paddingTop: 0;
+}
+.playControlBar{
+	padding-top: 0;
+	padding-bottom: 0;
+	horizontalGap: 0;
+	backgroundAlpha: 1.0;
+}
+Text.loginTxt
+{
+	fontWeight: bold;
+	color: #63A6B9;
+	fontSize: 11;
+}
+
+.fullscreen{
+	backgroundColor: #000000;
+	backgroundGradientColors: #000000, #000000; 
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-right: 0;
+	padding-left: 0;
+	         
+}
+
+.formItemStyle {
+    fontWeight: bold;
+    padding-top: 0;
+    padding-bottom: 0;
+    fontSize: 10; 
+    color: #63A6B9;
+	cornerRadius: 6;        
+}
+ProgressBar.downloadBar
+{
+	fontSize: 9;
+	color: #63A6B9;
+}
+@font-face
+{
+	fontFamily: "Helvetica Neue";
+	fontWeight: normal;
+	fontStyle: normal;
+	src: local("Helvetica Neue");
+}
+Text.status
+{
+	color: #63A6B9;
+	fontSize: 12;
+	fontWeight: bold;
+}
+Text.stat0
+{
+	color: #63A6B9;
+	fontSize: 12;
+	fontWeight: bold;
+}
+DataGrid.list
+{
+	alternatingItemColors: #F7F7F7, #E5F4F4;
+	fontSize: 13;
+	fontWeight: normal;
+	textAlign: left;
+	themeColor: #63A6B9;
+}
+.displayPane2
+{
+	backgroundAlpha: 0.0;
+	backgroundColor: #63A6B9;
+	borderColor: #63A6B9;
+	borderStyle: solid;
+	borderThickness: 1;
+	cornerRadius: 4;
+	paddingTop: 2;
+	paddingBottom: 0;
+	horizontalGap: 0;
+	backgroundSize: "100%";
+	horizontalAlign: left;
+	verticalAlign: middle;
+}
+.displayPane
+{
+	backgroundAlpha: 0.5;
+	backgroundColor: #63A6B9;
+	borderColor: #63A6B9;
+	borderStyle: solid;
+	borderThickness: 1;
+	cornerRadius: 4;
+	paddingTop: 3;
+	horizontalGap: 0;
+	backgroundImage: Embed(source="assets/background.png");
+	backgroundSize: auto;
+	horizontalAlign: left;
+	verticalAlign: middle;
+	fontFamily: "OCR A Std";
+	leading: 0;
+	fontSize: 12;
+	fontWeight: normal;
+}
+@font-face
+{
+	fontFamily: "OCR A Std";
+	fontWeight: bold;
+	fontStyle: normal;
+	src: local("OCR A Std");
+}
+@font-face
+{
+	fontFamily: "OCR A Std";
+	fontWeight: normal;
+	fontStyle: normal;
+	src: local("OCR A Std");
+}
+Alert{
+	borderColor: #C4DBDC;
+	backgroundColor: #C4DBDC;
+	roundedBottomCorners: true;
+	cornerRadius: 4;
+	borderThicknessLeft: 10;
+	borderThicknessRight: 10;
+	borderThicknessTop: 10;
+	borderThicknessBottom: 10;
+	color: #63A6B9;
+	fontWeight: bold;
+	fontSize: 13;
+	controlBarStyleName: alertControlBar;
+	titleStyleName: alertTitle;
+	headerHeight: 10;
+	backgroundAlpha: 0.9;
+	borderAlpha: 0.9;
+	statusStyleName: alertStatus;		
+}
